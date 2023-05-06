@@ -8,10 +8,10 @@
 #include <cppcoro/config.hpp>
 #include <cppcoro/cancellation_registration.hpp>
 #include <cppcoro/cancellation_token.hpp>
+#include <cppcoro/detail/coro.hpp>
 
 #include <atomic>
 #include <optional>
-#include <experimental/coroutine>
 
 #if CPPCORO_OS_WINNT
 # include <cppcoro/detail/win32.hpp>

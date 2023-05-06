@@ -11,6 +11,7 @@
 #include <cppcoro/sequence_traits.hpp>
 
 #include <cppcoro/detail/manual_lifetime.hpp>
+#include <cppcoro/detail/coro.hpp>
 
 #include <atomic>
 #include <cstdint>
@@ -194,7 +195,7 @@ namespace cppcoro
 			return m_barrierWait.await_ready();
 		}
 
-		auto await_suspend(std::experimental::coroutine_handle<> awaitingCoroutine) noexcept
+		auto await_suspend(coro::coroutine_handle<> awaitingCoroutine) noexcept
 		{
 			return m_barrierWait.await_suspend(awaitingCoroutine);
 		}
@@ -273,7 +274,7 @@ namespace cppcoro
 			return m_waitOp.await_ready();
 		}
 
-		auto await_suspend(std::experimental::coroutine_handle<> awaitingCoroutine) noexcept
+		auto await_suspend(coro::coroutine_handle<> awaitingCoroutine) noexcept
 		{
 			return m_waitOp.await_suspend(awaitingCoroutine);
 		}
@@ -347,7 +348,7 @@ namespace cppcoro
 			return !TRAITS::precedes(m_lastKnownPublished, m_targetSequence);
 		}
 
-		bool await_suspend(std::experimental::coroutine_handle<> awaitingCoroutine) noexcept
+		bool await_suspend(coro::coroutine_handle<> awaitingCoroutine) noexcept
 		{
 			m_awaitingCoroutine = awaitingCoroutine;
 
@@ -384,7 +385,7 @@ namespace cppcoro
 		SEQUENCE m_targetSequence;
 		SEQUENCE m_lastKnownPublished;
 		multi_producer_sequencer_wait_operation_base* m_next;
-		std::experimental::coroutine_handle<> m_awaitingCoroutine;
+		coro::coroutine_handle<> m_awaitingCoroutine;
 		std::atomic<bool> m_readyToResume;
 	};
 

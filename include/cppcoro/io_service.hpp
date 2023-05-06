@@ -8,6 +8,7 @@
 #include <cppcoro/config.hpp>
 #include <cppcoro/cancellation_token.hpp>
 #include <cppcoro/cancellation_registration.hpp>
+#include <cppcoro/detail/coro.hpp>
 
 #if CPPCORO_OS_WINNT
 # include <cppcoro/detail/win32.hpp>
@@ -19,7 +20,6 @@
 #include <atomic>
 #include <utility>
 #include <mutex>
-#include <experimental/coroutine>
 
 namespace cppcoro
 {
@@ -192,7 +192,7 @@ namespace cppcoro
 		{}
 
 		bool await_ready() const noexcept { return false; }
-		void await_suspend(std::experimental::coroutine_handle<> awaiter) noexcept;
+		void await_suspend(coro::coroutine_handle<> awaiter) noexcept;
 		void await_resume() const noexcept {}
 
 	private:
@@ -201,7 +201,7 @@ namespace cppcoro
 		friend class io_service::timed_schedule_operation;
 
 		io_service& m_service;
-		std::experimental::coroutine_handle<> m_awaiter;
+		coro::coroutine_handle<> m_awaiter;
 		schedule_operation* m_next;
 
 	};
@@ -224,7 +224,7 @@ namespace cppcoro
 		timed_schedule_operation& operator=(const timed_schedule_operation& other) = delete;
 
 		bool await_ready() const noexcept;
-		void await_suspend(std::experimental::coroutine_handle<> awaiter);
+		void await_suspend(coro::coroutine_handle<> awaiter);
 		void await_resume();
 
 	private:

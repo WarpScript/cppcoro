@@ -6,9 +6,10 @@
 #define CPPCORO_ASYNC_SCOPE_HPP_INCLUDED
 
 #include <cppcoro/on_scope_exit.hpp>
+#include <cppcoro/detail/coro.hpp>
+
 
 #include <atomic>
-#include <experimental/coroutine>
 #include <type_traits>
 #include <cassert>
 
@@ -52,7 +53,7 @@ namespace cppcoro
 					return m_scope->m_count.load(std::memory_order_acquire) == 0;
 				}
 
-				bool await_suspend(std::experimental::coroutine_handle<> continuation) noexcept
+				bool await_suspend(coro::coroutine_handle<> continuation) noexcept
 				{
 					m_scope->m_continuation = continuation;
 					return m_scope->m_count.fetch_sub(1u, std::memory_order_acq_rel) > 1u;
@@ -85,8 +86,8 @@ namespace cppcoro
 		{
 			struct promise_type
 			{
-				std::experimental::suspend_never initial_suspend() { return {}; }
-				std::experimental::suspend_never final_suspend() { return {}; }
+                                coro::suspend_never initial_suspend() { return {}; }
+				coro::suspend_never final_suspend() { return {}; }
 				void unhandled_exception() { std::terminate(); }
 				oneway_task get_return_object() { return {}; }
 				void return_void() {}
@@ -94,7 +95,7 @@ namespace cppcoro
 		};
 
 		std::atomic<size_t> m_count;
-		std::experimental::coroutine_handle<> m_continuation;
+		coro::coroutine_handle<> m_continuation;
 
 	};
 }

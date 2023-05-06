@@ -8,6 +8,8 @@
 #include <cppcoro/awaitable_traits.hpp>
 #include <cppcoro/is_awaitable.hpp>
 
+#include <cppcoro/detail/coro.hpp>
+
 #include <utility>
 #include <type_traits>
 #include <functional>
@@ -40,7 +42,7 @@ namespace cppcoro
 			}
 
 			template<typename PROMISE>
-			decltype(auto) await_suspend(std::experimental::coroutine_handle<PROMISE> coro)
+			decltype(auto) await_suspend(coro::coroutine_handle<PROMISE> coro)
 				noexcept(noexcept(static_cast<awaiter_t&&>(m_awaiter).await_suspend(std::move(coro))))
 			{
 				return static_cast<awaiter_t&&>(m_awaiter).await_suspend(std::move(coro));

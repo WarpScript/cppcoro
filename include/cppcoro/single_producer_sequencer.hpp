@@ -9,6 +9,8 @@
 #include <cppcoro/sequence_barrier.hpp>
 #include <cppcoro/sequence_range.hpp>
 
+#include <cppcoro/detail/coro.hpp>
+
 namespace cppcoro
 {
 	template<typename SEQUENCE, typename TRAITS, typename SCHEDULER>
@@ -160,7 +162,7 @@ namespace cppcoro
 			return m_consumerWaitOperation.await_ready();
 		}
 
-		auto await_suspend(std::experimental::coroutine_handle<> awaitingCoroutine) noexcept
+		auto await_suspend(coro::coroutine_handle<> awaitingCoroutine) noexcept
 		{
 			return m_consumerWaitOperation.await_suspend(awaitingCoroutine);
 		}
@@ -199,7 +201,7 @@ namespace cppcoro
 			return m_consumerWaitOperation.await_ready();
 		}
 
-		auto await_suspend(std::experimental::coroutine_handle<> awaitingCoroutine) noexcept
+		auto await_suspend(coro::coroutine_handle<> awaitingCoroutine) noexcept
 		{
 			return m_consumerWaitOperation.await_suspend(awaitingCoroutine);
 		}
